@@ -43,7 +43,7 @@ const startServer = async () => {
     '/auth/google/callback',
     passport.authenticate('google', { failureRedirect: '/' }),
     (req, res) => {
-      res.redirect('http://localhost:3000');
+      res.redirect('/dashboard');
     }
   );
 
