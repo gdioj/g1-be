@@ -1,4 +1,5 @@
+import { Request } from 'express';
 
 export interface Context {
-  req: Express.Request;
+  req: Request;
 }

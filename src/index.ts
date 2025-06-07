@@ -1,4 +1,3 @@
-import 'dotenv/config';
 import express from 'express';
 import { ApolloServer } from 'apollo-server-express';
 import session from 'express-session';
@@ -9,22 +8,23 @@ import { typeDefs, resolvers } from './graphql/index';
 import { connectDB } from './utils/connectDB';
 import { sessionOptions } from './utils/session';
 import { setupPassport } from './utils/passport';
+import 'dotenv/config';
 
 const PORT = process.env.PORT || 4000;
 
 const startServer = async () => {
   await connectDB();
 
-  const app = express();
+  const app: express.Application = express();
 
   app.use(cors({
     origin: 'http://localhost:3000',
     credentials: true,
   }));
 
-  app.use(session(sessionOptions));
-  app.use(passport.initialize());
-  app.use(passport.session());
+  app.use(session(sessionOptions) as any);
+  app.use(passport.initialize() as any);
+  app.use(passport.session() as any);
   setupPassport();
 
   const server = new ApolloServer({

@@ -1,9 +1,7 @@
 import { User, UserDocument } from "../../models/user";
 import { Item } from "../../models/item";
-
-interface Context {
-  req: Express.Request;
-}
+import { Context } from "../../types";
+import "../../types/express";
 
 export const resolvers = {
   Query: {
@@ -28,7 +26,7 @@ export const resolvers = {
       },
       context: Context
     ) => {
-      const user = context.req.user;
+      const user = context.req.user as UserDocument;
       if (!user) throw new Error("Not authenticated");
 
       const populatedUser = await User.findById(user._id).populate("household");
@@ -40,7 +38,7 @@ export const resolvers = {
         description,
         brands,
         price,
-        createdBy: (user as UserDocument)._id,
+        createdBy: user._id,
         household: populatedUser.household._id,
       });
 
@@ -66,12 +64,13 @@ export const resolvers = {
       },
       context: Context
     ) => {
-      if (!context.req.user) throw new Error("Not authenticated");
+      const user = context.req.user as UserDocument;
+      if (!user) throw new Error("Not authenticated");
       const item = await Item.findById(id);
       if (!item) throw new Error("Item not found");
 
       // Optional: restrict editing to creator
-      if (item.createdBy.toString() !== context.req.user._id.toString()) {
+      if (item.createdBy.toString() !== user._id.toString()) {
         throw new Error("Unauthorized");
       }
 
@@ -86,11 +85,12 @@ export const resolvers = {
     },
 
     deleteItem: async (_: any, { id }: { id: string }, context: Context) => {
-      if (!context.req.user) throw new Error("Not authenticated");
+      const user = context.req.user as UserDocument;
+      if (!user) throw new Error("Not authenticated");
       const item = await Item.findById(id);
       if (!item) return false;
 
-      if (item.createdBy.toString() !== context.req.user._id.toString()) {
+      if (item.createdBy.toString() !== user._id.toString()) {
         throw new Error("Unauthorized");
       }
 

@@ -2,6 +2,7 @@ import { Schema, model, Document, Types } from 'mongoose';
 import mongoose from 'mongoose';
 
 export interface UserDocument extends Document {
+  _id: Types.ObjectId;
   googleId: string;
   name: string;
   email: string;

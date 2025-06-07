@@ -1,6 +1,7 @@
 import { User, UserDocument } from "../../models/user";
 import { Household } from "../../models/household";
 import { Context } from "../../types";
+import "../../types/express";
 
 export const resolvers = {
   Query: {
@@ -18,16 +19,15 @@ export const resolvers = {
       { name }: { name: string },
       context: Context
     ) => {
-      const user = context.req.user;
+      const user = context.req.user as UserDocument;
       if (!user) throw new Error("Not authenticated");
 
-      const userDoc = user as UserDocument;
       const household = await Household.create({
         name,
-        members: [userDoc._id],
+        members: [user._id],
       });
 
-      await User.findByIdAndUpdate(userDoc._id, { household: household._id });
+      await User.findByIdAndUpdate(user._id, { household: household._id });
 
       return household;
     },
@@ -37,7 +37,7 @@ export const resolvers = {
       { householdId }: { householdId: string },
       context: Context
     ) => {
-      const user = context.req.user;
+      const user = context.req.user as UserDocument;
       if (!user) throw new Error("Not authenticated");
 
       const household = await Household.findById(householdId);
