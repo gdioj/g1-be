@@ -1,7 +1,6 @@
 import { User, UserDocument } from "../../models/user";
 import { Household } from "../../models/household";
 import { Context } from "../../types";
-import "../../types/express";
 
 export const resolvers = {
   Query: {
