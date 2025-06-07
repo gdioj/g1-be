@@ -44,6 +44,7 @@ const startServer = async () => {
     '/auth/google/callback',
     passport.authenticate('google', { failureRedirect: '/' }),
     (req, res) => {
+      console.log('User authenticated:', req.user);
       res.redirect(`${process.env.FRONTEND_URL || 'http://localhost:3000'}/auth/callback`);
     }
   );
