@@ -35,6 +35,7 @@ const startServer = async () => {
 
   await server.start();
   server.applyMiddleware({ app, cors: false });
+  app.set('trust proxy', 1); // trust Heroku proxy
 
   // Google OAuth routes (ensure these are still included)
   app.get('/auth/google', passport.authenticate('google', { scope: ['profile', 'email'] }));
