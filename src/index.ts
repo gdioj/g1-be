@@ -4,7 +4,7 @@ import session from 'express-session';
 import passport from 'passport';
 import cors from 'cors';
 
-import { typeDefs, resolvers } from './graphql/index';
+import { typeDefs, resolvers } from './graphql';
 import { connectDB } from './utils/connectDB';
 import { sessionOptions } from './utils/session';
 import { setupPassport } from './utils/passport';

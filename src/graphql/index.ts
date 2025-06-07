@@ -13,14 +13,14 @@ import { resolvers as itemResolvers } from './item/item.resolver';
 import { typeDefs as householdTypeDefs } from './household/household.typeDef';
 import { resolvers as householdResolvers } from './household/household.resolver';
 
-export const typeDefs = ([
+export const typeDefs = mergeTypeDefs([
   baseTypeDefs,
   userTypeDefs,
   itemTypeDefs,
   householdTypeDefs,
 ]);
 
-export const resolvers = ([
+export const resolvers = mergeResolvers([
   baseResolvers,
   userResolvers,
   itemResolvers,
